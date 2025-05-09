@@ -26,5 +26,10 @@ public class CommentController {
                                  @RequestParam UUID userId) {
         return commentService.updateComment(id, content, userId);
     }
+    @DeleteMapping("/{id}")
+    public void deleteComment(@PathVariable UUID id,
+                              @RequestParam UUID userId) {
+        commentService.deleteComment(id, userId);
+    }
 
 }

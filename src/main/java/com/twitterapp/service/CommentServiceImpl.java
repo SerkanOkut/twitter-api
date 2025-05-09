@@ -49,5 +49,19 @@ public class CommentServiceImpl implements CommentService{
         comment.setContent(content);
         return commentRepository.save(comment);
     }
+    @Override
+    public void deleteComment(UUID commentId, UUID currentUserId) {
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+
+        if (comment != null) {
+            UUID commentOwnerId = comment.getUser().getId();
+            UUID tweetOwnerId = comment.getTweet().getUser().getId();
+
+            if (commentOwnerId.equals(currentUserId) || tweetOwnerId.equals(currentUserId)) {
+                commentRepository.delete(comment);
+            }
+        }
+    }
+
 
 }
