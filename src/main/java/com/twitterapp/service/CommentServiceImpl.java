@@ -38,4 +38,16 @@ public class CommentServiceImpl implements CommentService{
                 .build();
         return  commentRepository.save(comment);
     }
+    @Override
+    public Comment updateComment(UUID commentId, String content, UUID currentUserId) {
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+
+        if (comment == null) return null;
+
+        if (!comment.getUser().getId().equals(currentUserId)) return null;
+
+        comment.setContent(content);
+        return commentRepository.save(comment);
+    }
+
 }

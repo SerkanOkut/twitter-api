@@ -6,4 +6,6 @@ import java.util.UUID;
 
 public interface CommentService {
     Comment createComment(String content, UUID tweetId , UUID userId);
+    Comment updateComment(UUID commentId, String content, UUID currentUserId);
+
 }

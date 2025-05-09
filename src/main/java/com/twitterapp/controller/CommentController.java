@@ -2,10 +2,7 @@ package com.twitterapp.controller;
 
 import com.twitterapp.entity.Comment;
 import com.twitterapp.service.CommentService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -23,4 +20,11 @@ public class CommentController {
                                  @RequestParam UUID userId) {
         return commentService.createComment(content, tweetId, userId);
     }
+    @PutMapping("/{id}")
+    public Comment updateComment(@PathVariable UUID id,
+                                 @RequestParam String content,
+                                 @RequestParam UUID userId) {
+        return commentService.updateComment(id, content, userId);
+    }
+
 }
