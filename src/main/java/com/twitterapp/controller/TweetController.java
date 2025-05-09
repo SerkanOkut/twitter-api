@@ -29,8 +29,8 @@ public class TweetController {
     }
 
     @PutMapping("/{id}")
-    public Tweet updateTweet(@PathVariable UUID id, @RequestParam String content) {
-        return tweetService.updateTweet(id,content);
+    public Tweet updateTweet(@PathVariable UUID id, @RequestParam String content, @RequestParam UUID userId) {
+        return tweetService.updateTweet(id,content,userId);
     }
 
     @DeleteMapping("/{id}")

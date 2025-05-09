@@ -8,7 +8,7 @@ public class TwitterapiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TwitterapiApplication.class, args);
-		System.out.println("Proje kurulumu test commit");
+		System.out.println("Uygulama ayakta");
 	}
 
 }

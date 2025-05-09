@@ -9,6 +9,6 @@ public interface TweetService {
     Tweet createTweet(String content , UUID userId);
     List<Tweet> getTweetsByUserId(UUID userId);
     Tweet getTweetById (UUID tweetId);
-    Tweet updateTweet (UUID tweetId , String content);
+    Tweet updateTweet (UUID tweetId , String content, UUID userId);
     void deleteTweet(UUID tweetId , UUID currentUserId);
 }

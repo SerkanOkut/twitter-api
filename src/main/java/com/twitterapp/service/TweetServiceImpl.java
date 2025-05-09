@@ -44,13 +44,18 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public Tweet updateTweet(UUID tweetId, String content) {
-        Tweet tweet = tweetRepository.findById(tweetId).orElse(null);
-        if (tweet == null) return null;
+    public Tweet updateTweet(UUID tweetId, String content, UUID userId) {
+        Tweet tweet = tweetRepository.findById(tweetId)
+                .orElseThrow(() -> new RuntimeException("Tweet bulunamadı"));
+
+        if (!tweet.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Bu tweet'i yalnızca sahibi güncelleyebilir.");
+        }
 
         tweet.setContent(content);
         return tweetRepository.save(tweet);
     }
+
 
     @Override
     public void deleteTweet(UUID tweetId, UUID currentUserId) {
