@@ -1,15 +1,12 @@
 package com.twitterapp.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "likes")
+@Table(name = "likes", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "tweet_id"}))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,11 +14,13 @@ import java.util.UUID;
 public class Like {
     @Id
     @GeneratedValue
-    private UUID id ;
+    private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "tweet_id", nullable = false)
     private Tweet tweet;
 }

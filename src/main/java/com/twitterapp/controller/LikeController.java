@@ -1,11 +1,10 @@
 package com.twitterapp.controller;
 
+import com.twitterapp.entity.Like;
 import com.twitterapp.service.LikeService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,9 +17,22 @@ public class LikeController {
     }
 
     @PostMapping
-    public void likeTweet(@RequestParam UUID userId,
-                          @RequestParam UUID tweetId) {
-        likeService.likeTweet(userId,tweetId);
+    public Like likeTweet(@RequestParam UUID userId, @RequestParam UUID tweetId) {
+        return likeService.likeTweet(userId, tweetId);
     }
 
+    @GetMapping("/count/{tweetId}")
+    public long countLikes(@PathVariable UUID tweetId) {
+        return likeService.countLikesByTweetId(tweetId);
+    }
+
+    @GetMapping("/tweet/{tweetId}")
+    public List<Like> getLikesByTweetId(@PathVariable UUID tweetId) {
+        return likeService.getLikesByTweetId(tweetId);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Like> getLikesByUserId(@PathVariable UUID userId) {
+        return likeService.getLikesByUserId(userId);
+    }
 }
