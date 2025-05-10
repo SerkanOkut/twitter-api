@@ -14,7 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class Retweet {
-
     @Id
     @GeneratedValue
     private UUID id;

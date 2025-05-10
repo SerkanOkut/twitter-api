@@ -9,39 +9,52 @@ import com.twitterapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class RetweetServiceImpl implements RetweetService {
 
     private final RetweetRepository retweetRepository;
-    private final UserRepository userRepository;
     private final TweetRepository tweetRepository;
+    private final UserRepository userRepository;
 
-    public RetweetServiceImpl(RetweetRepository retweetRepository, UserRepository userRepository, TweetRepository tweetRepository) {
+    public RetweetServiceImpl(RetweetRepository retweetRepository, TweetRepository tweetRepository, UserRepository userRepository) {
         this.retweetRepository = retweetRepository;
-        this.userRepository = userRepository;
         this.tweetRepository = tweetRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public void toggleRetweet(UUID userId, UUID tweetId) {
-        Retweet existing = retweetRepository.findByUserIdAndTweetId(userId, tweetId).orElse(null);
+    public Retweet toggleRetweet(UUID tweetId, UUID userId) {
+        Tweet tweet = tweetRepository.findById(tweetId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
 
-        if (existing != null) {
-            retweetRepository.delete(existing);
-        } else {
-            User user = userRepository.findById(userId).orElse(null);
-            Tweet tweet = tweetRepository.findById(tweetId).orElse(null);
-            if (user == null || tweet == null) return;
+        if (tweet == null || user == null) return null;
 
-            Retweet retweet = Retweet.builder()
-                    .user(user)
-                    .tweet(tweet)
-                    .createdAt(LocalDateTime.now())
-                    .build();
-
-            retweetRepository.save(retweet);
+        Retweet existingRetweet = retweetRepository.findByUserIdAndTweetId(userId, tweetId);
+        if (existingRetweet != null) {
+            retweetRepository.delete(existingRetweet);
+            return null;
         }
+
+        Retweet newRetweet = Retweet.builder()
+                .user(user)
+                .tweet(tweet)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        return retweetRepository.save(newRetweet);
     }
+
+    @Override
+    public List<Retweet> getRetweetsByUserId(UUID userId) {
+        return retweetRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<Retweet> getRetweetsByTweetId(UUID tweetId) {
+        return retweetRepository.findByTweetId(tweetId);
+    }
+
 }
