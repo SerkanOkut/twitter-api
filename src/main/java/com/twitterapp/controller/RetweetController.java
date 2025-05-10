@@ -32,4 +32,9 @@ public class RetweetController {
         return retweetService.getRetweetsByTweetId(tweetId);
     }
 
+    @GetMapping("/count/{tweetId}")
+    public long countRetweets(@PathVariable UUID tweetId) {
+        return retweetService.countRetweetsByTweetId(tweetId);
+    }
+
 }

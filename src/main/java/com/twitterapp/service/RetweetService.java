@@ -9,5 +9,6 @@ public interface RetweetService {
     Retweet toggleRetweet(UUID tweetId, UUID userId);
     List<Retweet> getRetweetsByUserId(UUID userId);
     List<Retweet> getRetweetsByTweetId(UUID tweetId);
+    long countRetweetsByTweetId(UUID tweetId);
 
 }

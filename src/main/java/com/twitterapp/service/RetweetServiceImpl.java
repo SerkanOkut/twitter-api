@@ -57,4 +57,9 @@ public class RetweetServiceImpl implements RetweetService {
         return retweetRepository.findByTweetId(tweetId);
     }
 
+    @Override
+    public long countRetweetsByTweetId(UUID tweetId) {
+        return retweetRepository.countByTweetId(tweetId);
+    }
+
 }
