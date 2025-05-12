@@ -6,11 +6,14 @@ import lombok.*;
 import java.util.UUID;
 
 @Entity
-@Table(name="users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username")
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 
     @Id
@@ -20,8 +23,8 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    private String email;
+
     @Column(nullable = false)
     private String password;
-
-    private String email;
 }
