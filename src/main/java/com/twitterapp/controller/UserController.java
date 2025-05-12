@@ -5,6 +5,7 @@ import com.twitterapp.dto.LoginRequest;
 import com.twitterapp.dto.RegisterRequest;
 import com.twitterapp.entity.User;
 import com.twitterapp.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,25 +19,31 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public AuthResponse register(@RequestBody RegisterRequest request) {
-        User user = User.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .build();
+    public AuthResponse register(@RequestBody @Valid RegisterRequest request) {
+        try {
+            User user = User.builder()
+                    .username(request.getUsername())
+                    .email(request.getEmail())
+                    .password(request.getPassword())
+                    .build();
 
-        User savedUser = userService.saveUser(user);
+            User savedUser = userService.saveUser(user);
 
-        return AuthResponse.builder()
-                .userId(savedUser.getId())
-                .username(savedUser.getUsername())
-                .email(savedUser.getEmail())
-                .message("Kayıt başarılı")
-                .build();
+            return AuthResponse.builder()
+                    .userId(savedUser.getId())
+                    .username(savedUser.getUsername())
+                    .email(savedUser.getEmail())
+                    .message("Kayıt başarılı")
+                    .build();
+        } catch (IllegalArgumentException e) {
+            return AuthResponse.builder()
+                    .message(e.getMessage())
+                    .build();
+        }
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest request) {
+    public AuthResponse login(@RequestBody @Valid LoginRequest request) {
         return userService.login(request.getUsername(), request.getPassword())
                 .map(user -> AuthResponse.builder()
                         .userId(user.getId())
